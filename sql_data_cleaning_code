@@ -1,1 +1,53 @@
+SELECT *
+FROM us_houshold_income.ushouseholdincome;
+
+SELECT *
+FROM us_houshold_income.ushouseholdincome_statistics;
+
+ALTER  TABLE us_houshold_income.ushouseholdincome_statistics RENAME COLUMN  ï»¿id TO id ;
+
+SELECT  id,COUNT(id)
+FROM us_houshold_income.ushouseholdincome
+GROUP BY 1
+HAVING count(id) > 1;
+DELETE FROM ushouseholdincome where id in (
+											select id 
+											FROM(
+											SELECT row_id,id,row_number() over (partition by id order by id ) as rn
+											from ushouseholdincome)A
+											where rn > 1);
+                                            
+SELECT State_Name
+FROM ushouseholdincome
+GROUP BY State_Name
+HAVING COUNT(State_Name) > 1;
+
+SELECT  * FROM ushouseholdincome;
+UPDATE ushouseholdincome
+SET State_Name = 'Georgia'
+WHERE State_Name = 'georia';
+
+UPDATE ushouseholdincome
+SET State_Name = 'Alabama'
+WHERE State_Name = 'alabama';
+
+UPDATE ushouseholdincome
+SET Place = 'Autaugaville'
+WHERE  County = 'Autauga County' and city = 'Vinemont';
+
+SELECT Type,COUNT(Type)
+from ushouseholdincome
+group by 1;
+
+UPDATE ushouseholdincome
+SET Type = 'Borough'
+WHERE State_Name = 'Boroughs';
+
+SELECT Aland,AWater
+FROM ushouseholdincome
+WHERE (AWater = 0 or AWater = '' or AWater is null ) and (Aland = 0 or Aland = '' or Aland is null );
+
+
+
+
 
